@@ -25,6 +25,23 @@ class ECCNCheckerTests(unittest.TestCase):
         self.assertTrue(result["compliance_flags"])
         self.assertTrue(result["requires_human_review"])
 
+    def test_model_name_direct_mapping(self) -> None:
+        result = self.checker.classify(
+            item_description="",
+            model_name="VPN-GW-X1",
+            destination_country="한국",
+        )
+        self.assertEqual(result["recommended_eccn"]["eccn"], "5A002")
+        self.assertIsNotNone(result["identifier_match"])
+
+    def test_part_number_direct_mapping(self) -> None:
+        result = self.checker.classify(
+            item_description="",
+            part_number="adc-hs-77",
+            destination_country="한국",
+        )
+        self.assertEqual(result["recommended_eccn"]["eccn"], "3A001")
+
 
 if __name__ == "__main__":
     unittest.main()
